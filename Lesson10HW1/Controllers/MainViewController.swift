@@ -29,30 +29,11 @@ class MainViewController: UIViewController {
         resultTextView.text = ""
         activityIndicatorView.startAnimating()
         
-        NetworkManager.fetchDataFromDictionaryApi(with: dictionaryWordTextField.text ?? "", completion: { modelJsonDictionaryApi, error, message in
+        NetworkManager.fetchDataFromDictionaryApi(with: dictionaryWordTextField.text ?? "", completion: { message in
             
             DispatchQueue.main.async {
                 self.activityIndicatorView.stopAnimating()
-            }
-            
-            if let error = error {
-                DispatchQueue.main.async {
-                    self.resultTextView.text = "\(error.localizedDescription)"
-                }
-                return
-            }
-            
-            if let message = message {
-                DispatchQueue.main.async {
-                    self.resultTextView.text = "\(message)"
-                }
-                return
-            }
-
-            if let modelJsonDictionaryApi = modelJsonDictionaryApi {
-                DispatchQueue.main.async {
-                    self.resultTextView.text = "\(modelJsonDictionaryApi.first?.showResult() ?? "Nothing")"
-                }
+                self.resultTextView.text = "\(message)"
             }
             
         })

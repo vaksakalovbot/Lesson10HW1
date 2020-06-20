@@ -10,32 +10,30 @@ import Foundation
 
 class NetworkManager {
     
-    static func fetchDataFromDictionaryApi(with word: String, completion: @escaping ([ModelJsonDictionaryApi]?, Error?, String?)->()) {
+    static func fetchDataFromDictionaryApi(with word: String, completion: @escaping (String)->()) {
         
         let jsonUrl = "https://api.dictionaryapi.dev/api/v1/entries/en/\(word.trimmingCharacters(in: [" "]))"
         
         guard let url = URL(string: jsonUrl) else {
-            completion(nil, nil, "Bad URL")
+            completion("Error: bad URL")
             return
         }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             if let error = error {
-                completion(nil, error, nil)
+                completion(error.localizedDescription)
                 return
             }
             
             guard let response = response else {
-                print("response = nil")
-                completion(nil, nil, "response = nil")
+                completion("Error: response = nil")
                 return
             }
             print(response)
             
             guard let data = data else {
-                print("data = nil")
-                completion(nil, nil, "data = nil")
+                completion("Error: data = nil")
                 return
             }
             
@@ -43,9 +41,9 @@ class NetworkManager {
             
             do {
                 let modelJsonDictionaryApi = try decoder.decode([ModelJsonDictionaryApi].self, from: data)
-                completion(modelJsonDictionaryApi, nil, nil)
+                completion("\(modelJsonDictionaryApi.first?.showResult() ?? "Nothing")")
             } catch let error {
-                completion(nil, error, nil)
+                completion(error.localizedDescription)
             }
             
         }.resume()
