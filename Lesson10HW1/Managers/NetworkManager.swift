@@ -10,7 +10,11 @@ import Foundation
 
 class NetworkManager {
     
-    static func fetchDataFromDictionaryApi(with word: String, completion: @escaping (String)->()) {
+    static let shared = NetworkManager()
+    
+    private init() {}
+    
+    func fetchDataFromDictionaryApi(with word: String, completion: @escaping (String)->()) {
         
         let jsonUrl = "https://api.dictionaryapi.dev/api/v1/entries/en/\(word.trimmingCharacters(in: [" "]))"
         

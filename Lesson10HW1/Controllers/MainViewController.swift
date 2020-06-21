@@ -29,7 +29,7 @@ class MainViewController: UIViewController {
         resultTextView.text = ""
         activityIndicatorView.startAnimating()
         
-        NetworkManager.fetchDataFromDictionaryApi(with: dictionaryWordTextField.text ?? "", completion: { message in
+        NetworkManager.shared.fetchDataFromDictionaryApi(with: dictionaryWordTextField.text ?? "", completion: { message in
             
             DispatchQueue.main.async {
                 self.activityIndicatorView.stopAnimating()
